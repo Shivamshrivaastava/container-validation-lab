@@ -1,0 +1,12 @@
+{
+  "name": "container-validation-lab",
+  "version": "1.0.0",
+  "description": "Running and Validating Containers Locally",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

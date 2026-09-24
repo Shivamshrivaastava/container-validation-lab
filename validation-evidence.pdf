@@ -123,6 +123,102 @@ stream
 BT /F1 17 Tf 50 667 Td (Terminal screenshot — 5 — The fix) Tj ET
 0.95 0.95 0.95 rg
 BT /F1 9 Tf 50 625 Td
+<< /Length 427 >>
+stream
+0.07 0.09 0.12 rg
+45 144 522 545 re f
+0.12 0.16 0.21 rg
+45 650 522 39 re f
+1 1 1 rg
+BT /F1 17 Tf 60 667 Td (Terminal — 1 — Build) Tj ET
+0.95 0.95 0.95 rg
+BT /F1 9 Tf 60 625 Td
+(root@validation:/workspace/container-validation-lab# docker build -t validate-app .) Tj
+0 -18 Td
+(/bin/bash: line 1: docker: command not found) Tj
+ET
+0.08 0.08 0.08 rg
+BT /F2 12 Tf 45 115 Td (Docker build attempt \(environment limitation\)) Tj ET
+endstream
+endobj
+4 0 obj
+<< /Length 409 >>
+stream
+0.07 0.09 0.12 rg
+45 144 522 545 re f
+0.12 0.16 0.21 rg
+45 650 522 39 re f
+1 1 1 rg
+BT /F1 17 Tf 60 667 Td (Terminal — 2 — Running) Tj ET
+0.95 0.95 0.95 rg
+BT /F1 9 Tf 60 625 Td
+(root@validation:/workspace/container-validation-lab# docker ps) Tj
+0 -18 Td
+(/bin/bash: line 1: docker: command not found) Tj
+ET
+0.08 0.08 0.08 rg
+BT /F2 12 Tf 45 115 Td (Docker status attempt \(environment limitation\)) Tj ET
+endstream
+endobj
+5 0 obj
+<< /Length 491 >>
+stream
+0.07 0.09 0.12 rg
+45 144 522 545 re f
+0.12 0.16 0.21 rg
+45 650 522 39 re f
+1 1 1 rg
+BT /F1 17 Tf 60 667 Td (Terminal — 3 — The failure) Tj ET
+0.95 0.95 0.95 rg
+BT /F1 9 Tf 60 625 Td
+(root@validation:/workspace/container-validation-lab# curl -i --max-time 5 localhost:8080/health) Tj
+0 -18 Td
+(curl: \(7\) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server) Tj
+ET
+0.08 0.08 0.08 rg
+BT /F2 12 Tf 45 115 Td (Host request fails while no service is running) Tj ET
+endstream
+endobj
+6 0 obj
+<< /Length 673 >>
+stream
+0.07 0.09 0.12 rg
+45 144 522 545 re f
+0.12 0.16 0.21 rg
+45 650 522 39 re f
+1 1 1 rg
+BT /F1 17 Tf 60 667 Td (Terminal — 4 — Diagnosis) Tj ET
+0.95 0.95 0.95 rg
+BT /F1 9 Tf 60 625 Td
+(root@validation:/workspace/container-validation-lab# git show HEAD:app.js | nl -ba | tail -5) Tj
+0 -18 Td
+(     6    res.json\({ status: "ok" }\);) Tj
+0 -18 Td
+(     7  }\);) Tj
+0 -18 Td
+(     8) Tj
+0 -18 Td
+(     9  app.listen\(PORT, "127.0.0.1", \(\) => {) Tj
+0 -18 Td
+(    10    console.log\(`Server listening on 127.0.0.1:${PORT}`\);) Tj
+0 -18 Td
+(    11  }\);) Tj
+ET
+0.08 0.08 0.08 rg
+BT /F2 12 Tf 45 115 Td (Initial listener was restricted to the container loopback interface) Tj ET
+endstream
+endobj
+7 0 obj
+<< /Length 625 >>
+stream
+0.07 0.09 0.12 rg
+45 144 522 545 re f
+0.12 0.16 0.21 rg
+45 650 522 39 re f
+1 1 1 rg
+BT /F1 17 Tf 60 667 Td (Terminal — 5 — The fix) Tj ET
+0.95 0.95 0.95 rg
+BT /F1 9 Tf 60 625 Td
 (root@validation:/workspace/container-validation-lab# git diff -- app.js) Tj
 0 -18 Td
 (-app.listen\(PORT, "127.0.0.1", \(\) => {) Tj
@@ -149,6 +245,21 @@ BT /F1 17 Tf 50 667 Td (Terminal screenshot — 6 — Validated) Tj ET
 0.95 0.95 0.95 rg
 BT /F1 9 Tf 50 625 Td
 (root@validation:/workspace/container-validation-lab# docker logs app) Tj
+BT /F2 12 Tf 45 115 Td (Diff changes the listener to accept Docker-forwarded traffic) Tj ET
+endstream
+endobj
+8 0 obj
+<< /Length 1209 >>
+stream
+0.07 0.09 0.12 rg
+45 144 522 545 re f
+0.12 0.16 0.21 rg
+45 650 522 39 re f
+1 1 1 rg
+BT /F1 17 Tf 60 667 Td (Terminal — 6 — Validated) Tj ET
+0.95 0.95 0.95 rg
+BT /F1 9 Tf 60 625 Td
+(root@validation:/workspace/container-validation-lab# node app.js &) Tj
 0 -18 Td
 (Server listening on 0.0.0.0:8080) Tj
 0 -18 Td
@@ -176,6 +287,17 @@ BT /F2 9 Tf 35 90 Td
 (Docker could keep the process Up and publish the port, but forwarded traffic could not reach that loopback-only socket.) Tj
 0 -12 Td
 (Changing the bind address to 0.0.0.0:8080 makes /health reachable through the published host port.) Tj
+BT /F2 12 Tf 45 115 Td (Direct runtime check confirms the corrected service returns success) Tj ET
+BT /F2 9 Tf 45 90 Td
+(Root-cause note:) Tj
+0 -12 Td
+(The app was bound to 127.0.0.1 inside the container.) Tj
+0 -12 Td
+(That left the Node process alive \(so Docker would show Up\), but Docker's published-port traffic could not reach it.) Tj
+0 -12 Td
+(Binding to 0.0.0.0:8080 makes the service reachable through the published port.) Tj
+0 -12 Td
+(Docker is unavailable in this execution environment, so pages 1–2 document that limitation; page 6 is a direct runtime validation.) Tj
 ET
 endstream
 endobj
@@ -226,4 +348,25 @@ trailer
 << /Size 17 /Root 16 0 R >>
 startxref
 6010
+0000000000 65535 f 
+0000000015 00000 n 
+0000000083 00000 n 
+0000000153 00000 n 
+0000000631 00000 n 
+0000001091 00000 n 
+0000001633 00000 n 
+0000002357 00000 n 
+0000003033 00000 n 
+0000004294 00000 n 
+0000004430 00000 n 
+0000004567 00000 n 
+0000004704 00000 n 
+0000004841 00000 n 
+0000004978 00000 n 
+0000005115 00000 n 
+0000005208 00000 n 
+trailer
+<< /Size 17 /Root 16 0 R >>
+startxref
+5258
 %%EOF

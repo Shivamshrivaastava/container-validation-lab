@@ -19,6 +19,7 @@ Build and run the container using the following commands:
 ```bash
 docker build -t validate-app .
 docker run -d -p 8080:8080 --name app validate-app
+docker inspect --format '{{.State.Health.Status}}' app
 ```
 
 ## Investigation Commands

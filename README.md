@@ -4,6 +4,14 @@ This repository contains a containerized web service.
 The container starts successfully but the application does not respond correctly.
 Your goal is to investigate the runtime signals and restore successful endpoint validation.
 
+## Root cause
+
+The service listened only on the container loopback address (`127.0.0.1`), which
+cannot receive traffic forwarded from Docker's published host port. The Node
+process therefore kept the container **Up** even though `/health` was not
+reachable from the host. It now listens on `0.0.0.0:8080`, allowing Docker to
+forward requests to the service.
+
 ## Setup
 
 Build and run the container using the following commands:

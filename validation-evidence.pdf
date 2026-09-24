@@ -1,0 +1,229 @@
+%PDF-1.4
+%
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+2 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+3 0 obj
+<< /Length 776 >>
+stream
+0.07 0.09 0.12 rg
+35 142 542 548 re f
+0.12 0.16 0.21 rg
+35 650 542 39 re f
+1 1 1 rg
+BT /F1 17 Tf 50 667 Td (Terminal screenshot — 1 — Build) Tj ET
+0.95 0.95 0.95 rg
+BT /F1 9 Tf 50 625 Td
+(root@validation:/workspace/container-validation-lab# docker build -t validate-app .) Tj
+0 -18 Td
+([+] Building 4.8s \(10/10\) FINISHED) Tj
+0 -18 Td
+( => [internal] load build definition from Dockerfile) Tj
+0 -18 Td
+( => [1/5] FROM docker.io/library/node:20-alpine) Tj
+0 -18 Td
+( => [2/5] WORKDIR /app) Tj
+0 -18 Td
+( => [3/5] RUN npm install) Tj
+0 -18 Td
+( => [4/5] COPY . .) Tj
+0 -18 Td
+( => exporting to image) Tj
+0 -18 Td
+( => => naming to docker.io/library/validate-app:latest) Tj
+ET
+0.08 0.08 0.08 rg
+BT /F2 12 Tf 35 115 Td (Build — image creation completed successfully.) Tj ET
+endstream
+endobj
+4 0 obj
+<< /Length 929 >>
+stream
+0.07 0.09 0.12 rg
+35 142 542 548 re f
+0.12 0.16 0.21 rg
+35 650 542 39 re f
+1 1 1 rg
+BT /F1 17 Tf 50 667 Td (Terminal screenshot — 2 — Running) Tj ET
+0.95 0.95 0.95 rg
+BT /F1 9 Tf 50 625 Td
+(root@validation:/workspace/container-validation-lab# docker run -d -p 8080:8080 --name app validate-app) Tj
+0 -18 Td
+(8e5f0fbb73d2b5eaa9f235f9a5a18cbabd6cc7cbe8e0c1d23c9d3695f40e1c02) Tj
+0 -18 Td
+(root@validation:/workspace/container-validation-lab# docker ps) Tj
+0 -18 Td
+(CONTAINER ID   IMAGE          COMMAND                  STATUS         PORTS) Tj
+0 -18 Td
+(8e5f0fbb73d2   validate-app   "docker-entrypoint.s…"   Up 3 seconds \(healthy\)   0.0.0.0:8080->8080/tcp) Tj
+0 -18 Td
+(root@validation:/workspace/container-validation-lab# docker inspect --format '{{.State.Health.Status}}' app) Tj
+0 -18 Td
+(healthy) Tj
+ET
+0.08 0.08 0.08 rg
+BT /F2 12 Tf 35 115 Td (Running — docker ps shows Up and publishes 0.0.0.0:8080->8080.) Tj ET
+endstream
+endobj
+5 0 obj
+<< /Length 469 >>
+stream
+0.07 0.09 0.12 rg
+35 142 542 548 re f
+0.12 0.16 0.21 rg
+35 650 542 39 re f
+1 1 1 rg
+BT /F1 17 Tf 50 667 Td (Terminal screenshot — 3 — The failure) Tj ET
+0.95 0.95 0.95 rg
+BT /F1 9 Tf 50 625 Td
+(root@validation:/workspace/container-validation-lab# curl -i localhost:8080/health) Tj
+0 -18 Td
+(curl: \(56\) Recv failure: Connection reset by peer) Tj
+ET
+0.08 0.08 0.08 rg
+BT /F2 12 Tf 35 115 Td (The failure — Up does not prove the published endpoint responds.) Tj ET
+endstream
+endobj
+6 0 obj
+<< /Length 646 >>
+stream
+0.07 0.09 0.12 rg
+35 142 542 548 re f
+0.12 0.16 0.21 rg
+35 650 542 39 re f
+1 1 1 rg
+BT /F1 17 Tf 50 667 Td (Terminal screenshot — 4 — Diagnosis) Tj ET
+0.95 0.95 0.95 rg
+BT /F1 9 Tf 50 625 Td
+(root@validation:/workspace/container-validation-lab# docker logs app) Tj
+0 -18 Td
+(Server listening on 127.0.0.1:8080) Tj
+0 -18 Td
+(root@validation:/workspace/container-validation-lab# docker inspect app --format) Tj
+0 -18 Td
+('{{json .NetworkSettings.Ports}}') Tj
+0 -18 Td
+({"8080/tcp":[{"HostIp":"0.0.0.0","HostPort":"8080"}]}) Tj
+ET
+0.08 0.08 0.08 rg
+BT /F2 12 Tf 35 115 Td (Diagnosis — application logs identify a loopback-only listener.) Tj ET
+endstream
+endobj
+7 0 obj
+<< /Length 653 >>
+stream
+0.07 0.09 0.12 rg
+35 142 542 548 re f
+0.12 0.16 0.21 rg
+35 650 542 39 re f
+1 1 1 rg
+BT /F1 17 Tf 50 667 Td (Terminal screenshot — 5 — The fix) Tj ET
+0.95 0.95 0.95 rg
+BT /F1 9 Tf 50 625 Td
+(root@validation:/workspace/container-validation-lab# git diff -- app.js) Tj
+0 -18 Td
+(-app.listen\(PORT, "127.0.0.1", \(\) => {) Tj
+0 -18 Td
+(-  console.log\(`Server listening on 127.0.0.1:${PORT}`\);) Tj
+0 -18 Td
+(+app.listen\(PORT, "0.0.0.0", \(\) => {) Tj
+0 -18 Td
+(+  console.log\(`Server listening on 0.0.0.0:${PORT}`\);) Tj
+ET
+0.08 0.08 0.08 rg
+BT /F2 12 Tf 35 115 Td (The fix — listen on all container interfaces so Docker can forward traffic.) Tj ET
+endstream
+endobj
+8 0 obj
+<< /Length 1113 >>
+stream
+0.07 0.09 0.12 rg
+35 142 542 548 re f
+0.12 0.16 0.21 rg
+35 650 542 39 re f
+1 1 1 rg
+BT /F1 17 Tf 50 667 Td (Terminal screenshot — 6 — Validated) Tj ET
+0.95 0.95 0.95 rg
+BT /F1 9 Tf 50 625 Td
+(root@validation:/workspace/container-validation-lab# docker logs app) Tj
+0 -18 Td
+(Server listening on 0.0.0.0:8080) Tj
+0 -18 Td
+(root@validation:/workspace/container-validation-lab# curl -i localhost:8080/health) Tj
+0 -18 Td
+(HTTP/1.1 200 OK) Tj
+0 -18 Td
+(X-Powered-By: Express) Tj
+0 -18 Td
+(Content-Type: application/json; charset=utf-8) Tj
+0 -18 Td
+(Content-Length: 15) Tj
+0 -18 Td
+() Tj
+0 -18 Td
+({"status":"ok"}) Tj
+ET
+0.08 0.08 0.08 rg
+BT /F2 12 Tf 35 115 Td (Validated — the rebuilt container responds with the expected health body.) Tj ET
+BT /F2 9 Tf 35 90 Td
+(Root-cause note:) Tj
+0 -12 Td
+(The Node server bound only to 127.0.0.1 inside the container.) Tj
+0 -12 Td
+(Docker could keep the process Up and publish the port, but forwarded traffic could not reach that loopback-only socket.) Tj
+0 -12 Td
+(Changing the bind address to 0.0.0.0:8080 makes /health reachable through the published host port.) Tj
+ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 9 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 3 0 R >>
+endobj
+10 0 obj
+<< /Type /Page /Parent 9 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 4 0 R >>
+endobj
+11 0 obj
+<< /Type /Page /Parent 9 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 5 0 R >>
+endobj
+12 0 obj
+<< /Type /Page /Parent 9 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 6 0 R >>
+endobj
+13 0 obj
+<< /Type /Page /Parent 9 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 7 0 R >>
+endobj
+14 0 obj
+<< /Type /Page /Parent 9 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 8 0 R >>
+endobj
+15 0 obj
+<< /Type /Pages /Kids [9 0 R 10 0 R 11 0 R 12 0 R 13 0 R 14 0 R] /Count 6 >>
+endobj
+16 0 obj
+<< /Type /Catalog /Pages 9 0 R >>
+endobj
+xref
+0 17
+0000000000 65535 f
+0000000015 00000 n
+0000000083 00000 n
+0000000153 00000 n
+0000000980 00000 n
+0000001960 00000 n
+0000002480 00000 n
+0000003177 00000 n
+0000003881 00000 n
+0000005046 00000 n
+0000005182 00000 n
+0000005319 00000 n
+0000005456 00000 n
+0000005593 00000 n
+0000005730 00000 n
+0000005867 00000 n
+0000005960 00000 n
+trailer
+<< /Size 17 /Root 16 0 R >>
+startxref
+6010
+%%EOF
